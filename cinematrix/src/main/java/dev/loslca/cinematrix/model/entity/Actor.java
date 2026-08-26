@@ -11,7 +11,7 @@ public class Actor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "actor_id")
-    private Integer actorId;
+    private Long actorId;
 
     @Column(name = "first_name", nullable = false, length = 100)
     private String firstName;
@@ -33,8 +33,8 @@ public class Actor {
 
     public Actor() {}
 
-    public Integer getActorId() { return actorId; }
-    public void setActorId(Integer actorId) { this.actorId = actorId; }
+    public Long getActorId() { return actorId; }
+    public void setActorId(Long actorId) { this.actorId = actorId; }
 
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
