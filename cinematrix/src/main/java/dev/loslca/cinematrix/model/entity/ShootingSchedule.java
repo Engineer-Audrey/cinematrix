@@ -10,7 +10,7 @@ public class ShootingSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "shooting_schedule_id")
-    private Integer shootingScheduleId;
+    private Long shootingScheduleId;
 
     @ManyToOne
     @JoinColumn(name = "production_id", nullable = false)
@@ -28,8 +28,8 @@ public class ShootingSchedule {
 
     public ShootingSchedule() {}
 
-    public Integer getShootingScheduleId() { return shootingScheduleId; }
-    public void setShootingScheduleId(Integer shootingScheduleId) { this.shootingScheduleId = shootingScheduleId; }
+    public Long getShootingScheduleId() { return shootingScheduleId; }
+    public void setShootingScheduleId(Long shootingScheduleId) { this.shootingScheduleId = shootingScheduleId; }
 
     public Production getProduction() { return production; }
     public void setProduction(Production production) { this.production = production; }

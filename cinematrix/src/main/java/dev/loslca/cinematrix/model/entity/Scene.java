@@ -11,7 +11,7 @@ public class Scene {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "scene_id")
-    private Integer sceneId;
+    private Long sceneId;
 
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)
@@ -35,8 +35,8 @@ public class Scene {
 
     public Scene() {}
 
-    public Integer getSceneId() { return sceneId; }
-    public void setSceneId(Integer sceneId) { this.sceneId = sceneId; }
+    public Long getSceneId() { return sceneId; }
+    public void setSceneId(Long sceneId) { this.sceneId = sceneId; }
 
     public Movie getMovie() { return movie; }
     public void setMovie(Movie movie) { this.movie = movie; }

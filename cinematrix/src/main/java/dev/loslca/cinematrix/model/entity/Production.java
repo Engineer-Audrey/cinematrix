@@ -13,7 +13,7 @@ public class Production {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "production_id")
-    private Integer productionId;
+    private Long productionId;
 
     @Column(name = "name", nullable = false, length = 150)
     private String name;
@@ -49,8 +49,8 @@ public class Production {
 
     public Production() {}
 
-    public Integer getProductionId() { return productionId; }
-    public void setProductionId(Integer productionId) { this.productionId = productionId; }
+    public Long getProductionId() { return productionId; }
+    public void setProductionId(Long productionId) { this.productionId = productionId; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }

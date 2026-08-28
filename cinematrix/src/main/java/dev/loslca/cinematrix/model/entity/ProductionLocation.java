@@ -10,7 +10,7 @@ public class ProductionLocation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "production_location_id")
-    private Integer productionLocationId;
+    private Long productionLocationId;
 
     @ManyToOne
     @JoinColumn(name = "production_id", nullable = false)
@@ -28,8 +28,8 @@ public class ProductionLocation {
 
     public ProductionLocation() {}
 
-    public Integer getProductionLocationId() { return productionLocationId; }
-    public void setProductionLocationId(Integer productionLocationId) { this.productionLocationId = productionLocationId; }
+    public Long getProductionLocationId() { return productionLocationId; }
+    public void setProductionLocationId(Long productionLocationId) { this.productionLocationId = productionLocationId; }
 
     public Production getProduction() { return production; }
     public void setProduction(Production production) { this.production = production; }

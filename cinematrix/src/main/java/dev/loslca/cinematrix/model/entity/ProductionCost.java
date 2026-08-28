@@ -11,7 +11,7 @@ public class ProductionCost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "production_cost_id")
-    private Integer productionCostId;
+    private Long productionCostId;
 
     @ManyToOne
     @JoinColumn(name = "production_id", nullable = false)
@@ -28,8 +28,8 @@ public class ProductionCost {
 
     public ProductionCost() {}
 
-    public Integer getProductionCostId() { return productionCostId; }
-    public void setProductionCostId(Integer productionCostId) { this.productionCostId = productionCostId; }
+    public Long getProductionCostId() { return productionCostId; }
+    public void setProductionCostId(Long productionCostId) { this.productionCostId = productionCostId; }
 
     public Production getProduction() { return production; }
     public void setProduction(Production production) { this.production = production; }
