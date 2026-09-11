@@ -30,7 +30,7 @@ public class Movie {
     @Column(name = "release_date")
     private LocalDate releaseDate;
 
-    @ManyToOne
+    @ManyToOne //TODO: mejor one to one
     @JoinColumn(name = "production_id", nullable = false)
     private Production production;
 

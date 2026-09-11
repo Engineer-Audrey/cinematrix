@@ -20,8 +20,7 @@ public class ProductionLocation {
     @JoinColumn(name = "location_id", nullable = false)
     private Location location;
 
-    @Column(name = "use_date")
-    private LocalDate useDate;
+
 
     @Column(name = "notes", length = 255)
     private String notes;
@@ -37,8 +36,7 @@ public class ProductionLocation {
     public Location getLocation() { return location; }
     public void setLocation(Location location) { this.location = location; }
 
-    public LocalDate getUseDate() { return useDate; }
-    public void setUseDate(LocalDate useDate) { this.useDate = useDate; }
+
 
     public String getNotes() { return notes; }
     public void setNotes(String notes) { this.notes = notes; }

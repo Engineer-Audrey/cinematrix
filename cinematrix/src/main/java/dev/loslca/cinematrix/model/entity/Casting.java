@@ -9,13 +9,13 @@ public class Casting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "casting_id")
-    private Integer castingId;
+    private Long castingId;
 
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 
-    @ManyToOne
+    @ManyToOne  //TODO: mirar mejor que relaciona mejor
     @JoinColumn(name = "actor_id", nullable = false)
     private Actor actor;
 
@@ -27,8 +27,8 @@ public class Casting {
 
     public Casting() {}
 
-    public Integer getCastingId() { return castingId; }
-    public void setCastingId(Integer castingId) { this.castingId = castingId; }
+    public Long getCastingId() { return castingId; }
+    public void setCastingId(Long castingId) { this.castingId = castingId; }
 
     public Movie getMovie() { return movie; }
     public void setMovie(Movie movie) { this.movie = movie; }

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "_user")
+@Table(name = "app_user")
 public class User {
 
     @Id
@@ -26,7 +26,7 @@ public class User {
     private String password;
 
     @Column(name = "active", nullable = false)
-    private Boolean active = true;
+    private Boolean isActive = true;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -61,8 +61,8 @@ public class User {
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
-    public Boolean getActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
+    public Boolean getIsActive() { return isActive; }
+    public void setIsActive(Boolean isActive) { this.isActive = isActive; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }

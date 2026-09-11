@@ -28,10 +28,9 @@ public class Scene {
     private Location location;
 
     @Column(name = "shooting_date")
-    private LocalDate shootingDate;
+    private LocalDate shootingDate; // TODO: shootinSchedule
 
-    @OneToMany(mappedBy = "scene")
-    private List<SceneActor> sceneActors;
+
 
     public Scene() {}
 
@@ -53,6 +52,5 @@ public class Scene {
     public LocalDate getShootingDate() { return shootingDate; }
     public void setShootingDate(LocalDate shootingDate) { this.shootingDate = shootingDate; }
 
-    public List<SceneActor> getSceneActors() { return sceneActors; }
-    public void setSceneActors(List<SceneActor> sceneActors) { this.sceneActors = sceneActors; }
+
 }
