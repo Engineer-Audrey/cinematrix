@@ -11,46 +11,34 @@ public class Actor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "actor_id")
-    private Long actorId;
+    private Long id;
 
-    @Column(name = "first_name", nullable = false, length = 100)
-    private String firstName;
-
-    @Column(name = "last_name", nullable = false, length = 100)
-    private String lastName;
-
-    @Column(name = "birth_date")
-    private LocalDate birthDate;
+    @Column(name = "name", nullable = false, length = 150)
+    private String name;
 
     @Column(name = "nationality", length = 100)
     private String nationality;
 
-    @OneToMany(mappedBy = "actor")
-    private List<Casting> castings;
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
 
-    @OneToMany(mappedBy = "actor")
-    private List<SceneActor> sceneAssignments;
+    @ManyToMany(mappedBy = "actors")
+    private List<Movie> movies;
 
     public Actor() {}
 
-    public Long getActorId() { return actorId; }
-    public void setActorId(Long actorId) { this.actorId = actorId; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getFirstName() { return firstName; }
-    public void setFirstName(String firstName) { this.firstName = firstName; }
-
-    public String getLastName() { return lastName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
-
-    public LocalDate getBirthDate() { return birthDate; }
-    public void setBirthDate(LocalDate birthDate) { this.birthDate = birthDate; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
     public String getNationality() { return nationality; }
     public void setNationality(String nationality) { this.nationality = nationality; }
 
-    public List<Casting> getCastings() { return castings; }
-    public void setCastings(List<Casting> castings) { this.castings = castings; }
+    public LocalDate getBirthDate() { return birthDate; }
+    public void setBirthDate(LocalDate birthDate) { this.birthDate = birthDate; }
 
-    public List<SceneActor> getSceneAssignments() { return sceneAssignments; }
-    public void setSceneAssignments(List<SceneActor> sceneAssignments) { this.sceneAssignments = sceneAssignments; }
+    public List<Movie> getMovies() { return movies; }
+    public void setMovies(List<Movie> movies) { this.movies = movies; }
 }

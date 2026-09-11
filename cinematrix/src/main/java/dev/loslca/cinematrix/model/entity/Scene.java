@@ -1,8 +1,7 @@
 package dev.loslca.cinematrix.model.entity;
 
+import dev.loslca.cinematrix.model.constant.TimeOfDay;
 import jakarta.persistence.*;
-import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Table(name = "scene")
@@ -11,11 +10,7 @@ public class Scene {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "scene_id")
-    private Long sceneId;
-
-    @ManyToOne
-    @JoinColumn(name = "movie_id", nullable = false)
-    private Movie movie;
+    private Long id;
 
     @Column(name = "scene_number", nullable = false)
     private Integer sceneNumber;
@@ -23,22 +18,22 @@ public class Scene {
     @Column(name = "description", length = 255)
     private String description;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "time_of_day", nullable = false)
+    private TimeOfDay timeOfDay;
+
     @ManyToOne
-    @JoinColumn(name = "location_id")
+    @JoinColumn(name = "movie_id", nullable = false)
+    private Movie movie;
+
+    @ManyToOne
+    @JoinColumn(name = "location_id", nullable = false)
     private Location location;
-
-    @Column(name = "shooting_date")
-    private LocalDate shootingDate; // TODO: shootinSchedule
-
-
 
     public Scene() {}
 
-    public Long getSceneId() { return sceneId; }
-    public void setSceneId(Long sceneId) { this.sceneId = sceneId; }
-
-    public Movie getMovie() { return movie; }
-    public void setMovie(Movie movie) { this.movie = movie; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public Integer getSceneNumber() { return sceneNumber; }
     public void setSceneNumber(Integer sceneNumber) { this.sceneNumber = sceneNumber; }
@@ -46,11 +41,12 @@ public class Scene {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
+    public TimeOfDay getTimeOfDay() { return timeOfDay; }
+    public void setTimeOfDay(TimeOfDay timeOfDay) { this.timeOfDay = timeOfDay; }
+
+    public Movie getMovie() { return movie; }
+    public void setMovie(Movie movie) { this.movie = movie; }
+
     public Location getLocation() { return location; }
     public void setLocation(Location location) { this.location = location; }
-
-    public LocalDate getShootingDate() { return shootingDate; }
-    public void setShootingDate(LocalDate shootingDate) { this.shootingDate = shootingDate; }
-
-
 }

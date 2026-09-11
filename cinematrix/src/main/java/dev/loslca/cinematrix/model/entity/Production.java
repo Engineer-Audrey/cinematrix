@@ -1,10 +1,6 @@
 package dev.loslca.cinematrix.model.entity;
 
-import dev.loslca.cinematrix.model.constant.ProductionStatus;
 import jakarta.persistence.*;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Table(name = "production")
@@ -13,72 +9,29 @@ public class Production {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "production_id")
-    private Long productionId;
-
-    @Column(name = "name", nullable = false, length = 150)
-    private String name;
+    private Long id;
 
     @Column(name = "budget", nullable = false)
-    private BigDecimal budget;
+    private Double budget;
 
-    @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
+    @Column(name = "actual_cost")
+    private Double actualCost;
 
-    @Column(name = "end_date")
-    private LocalDate endDate;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private ProductionStatus status = ProductionStatus.planning;
-
-    @ManyToOne
-    @JoinColumn(name = "producer_id", nullable = false)
-    private User producer;
-
-    @OneToMany(mappedBy = "production")
-    private List<ProductionLocation> productionLocations;
-
-    @OneToMany(mappedBy = "production")
-    private List<ProductionCost> productionCosts;
-
-    @OneToMany(mappedBy = "production")
-    private List<ShootingSchedule> shootingSchedules;
-
-    @OneToMany(mappedBy = "production")
-    private List<Movie> movies;
+    @OneToOne
+    @JoinColumn(name = "movie_id", unique = true)
+    private Movie movie;
 
     public Production() {}
 
-    public Long getProductionId() { return productionId; }
-    public void setProductionId(Long productionId) { this.productionId = productionId; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public Double getBudget() { return budget; }
+    public void setBudget(Double budget) { this.budget = budget; }
 
-    public BigDecimal getBudget() { return budget; }
-    public void setBudget(BigDecimal budget) { this.budget = budget; }
+    public Double getActualCost() { return actualCost; }
+    public void setActualCost(Double actualCost) { this.actualCost = actualCost; }
 
-    public LocalDate getStartDate() { return startDate; }
-    public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
-
-    public LocalDate getEndDate() { return endDate; }
-    public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
-
-    public ProductionStatus getStatus() { return status; }
-    public void setStatus(ProductionStatus status) { this.status = status; }
-
-    public User getProducer() { return producer; }
-    public void setProducer(User producer) { this.producer = producer; }
-
-    public List<ProductionLocation> getProductionLocations() { return productionLocations; }
-    public void setProductionLocations(List<ProductionLocation> productionLocations) { this.productionLocations = productionLocations; }
-
-    public List<ProductionCost> getProductionCosts() { return productionCosts; }
-    public void setProductionCosts(List<ProductionCost> productionCosts) { this.productionCosts = productionCosts; }
-
-    public List<ShootingSchedule> getShootingSchedules() { return shootingSchedules; }
-    public void setShootingSchedules(List<ShootingSchedule> shootingSchedules) { this.shootingSchedules = shootingSchedules; }
-
-    public List<Movie> getMovies() { return movies; }
-    public void setMovies(List<Movie> movies) { this.movies = movies; }
+    public Movie getMovie() { return movie; }
+    public void setMovie(Movie movie) { this.movie = movie; }
 }
