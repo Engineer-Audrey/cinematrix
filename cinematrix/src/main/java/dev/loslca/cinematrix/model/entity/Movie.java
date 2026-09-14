@@ -40,12 +40,7 @@ public class Movie {
     @OneToMany(mappedBy = "movie")
     private List<Scene> scenes;
 
-    @ManyToMany
-    @JoinTable(
-        name = "movie_actor",
-        joinColumns = @JoinColumn(name = "movie_id"),
-        inverseJoinColumns = @JoinColumn(name = "actor_id")
-    )
+    @OneToMany(mappedBy = "movie")
     private List<Actor> actors;
 
     public Movie() {}

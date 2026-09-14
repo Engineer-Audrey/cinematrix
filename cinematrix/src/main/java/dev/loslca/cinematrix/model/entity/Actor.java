@@ -22,8 +22,9 @@ public class Actor {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @ManyToMany(mappedBy = "actors")
-    private List<Movie> movies;
+    @ManyToOne
+    @JoinColumn(name = "actor_id")
+    private Movie movie;
 
     public Actor() {}
 
@@ -39,6 +40,6 @@ public class Actor {
     public LocalDate getBirthDate() { return birthDate; }
     public void setBirthDate(LocalDate birthDate) { this.birthDate = birthDate; }
 
-    public List<Movie> getMovies() { return movies; }
-    public void setMovies(List<Movie> movies) { this.movies = movies; }
+    public Movie getMovies() { return movie; }
+    public void setMovies(Movie movies) { this.movie = movie; }
 }

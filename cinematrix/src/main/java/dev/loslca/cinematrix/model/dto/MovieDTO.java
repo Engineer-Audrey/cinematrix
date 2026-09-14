@@ -9,6 +9,7 @@ public record MovieDTO(
         Integer durationMinutes,
         LocalDate releaseDate,
         MovieGenre genre,
+        Long actor,
         Long directorId,
         Long productionId) {
 }

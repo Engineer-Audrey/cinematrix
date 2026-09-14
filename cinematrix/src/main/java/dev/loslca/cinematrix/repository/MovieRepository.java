@@ -16,4 +16,5 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     public List<Movie> findByDirectorId(Long directorId);
     public List<Movie> findByDirectorNameContainingIgnoreCase(String name);
     public List<Movie> findByProductionId(Long productionId);
+    public List<Movie> findByActor(Long actorId);
 }
