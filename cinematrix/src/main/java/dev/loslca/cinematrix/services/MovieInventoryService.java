@@ -1,29 +1,40 @@
 package dev.loslca.cinematrix.services;
 
+import dev.loslca.cinematrix.model.constant.MovieGenre;
+import dev.loslca.cinematrix.model.dto.ActorDTO;
 import dev.loslca.cinematrix.model.dto.MovieDTO;
+import dev.loslca.cinematrix.model.dto.SceneDTO;
+import dev.loslca.cinematrix.model.entity.Actor;
 import dev.loslca.cinematrix.model.entity.Director;
+import dev.loslca.cinematrix.model.entity.Location;
 import dev.loslca.cinematrix.model.entity.Movie;
-import dev.loslca.cinematrix.model.entity.Production;
+import dev.loslca.cinematrix.model.entity.Scene;
+import dev.loslca.cinematrix.repository.ActorRepository;
 import dev.loslca.cinematrix.repository.DirectorRepository;
+import dev.loslca.cinematrix.repository.LocationRepository;
 import dev.loslca.cinematrix.repository.MovieRepository;
-import dev.loslca.cinematrix.repository.ProductionRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public class MovieInventoryService {
 
     private final MovieRepository repository;
     private final DirectorRepository directorRepository;
-    private final ProductionRepository productionRepository;
+    private final ActorRepository actorRepository;
+    private final LocationRepository locationRepository;
 
     public MovieInventoryService(MovieRepository repository,
                                  DirectorRepository directorRepository,
-                                 ProductionRepository productionRepository) {
+                                 ActorRepository actorRepository,
+                                 LocationRepository locationRepository) {
         this.repository = repository;
         this.directorRepository = directorRepository;
-        this.productionRepository = productionRepository;
+        this.actorRepository = actorRepository;
+        this.locationRepository = locationRepository;
     }
 
     public List<Movie> findAllMovies() {
@@ -47,7 +58,8 @@ public class MovieInventoryService {
     }
 
     public List<Movie> findMoviesByGenre(String genre) {
-        return this.repository.findByGenre(genre.toUpperCase());
+        MovieGenre movieGenre = MovieGenre.valueOf(genre.toUpperCase());
+        return this.repository.findByGenre(movieGenre);
     }
 
     public List<Movie> findMoviesByDirectorId(Long directorId) {
@@ -63,31 +75,23 @@ public class MovieInventoryService {
     }
 
     public MovieDTO createMovie(MovieDTO movieRequest) throws EntityNotFoundException {
-        Director director = findDirector(movieRequest.directorId());
-        Production production = findProduction(movieRequest.productionId());
+        Director director = findDirector(movieRequest.director());
         Movie movie = new Movie();
-        setAttributesFromDTO(movieRequest, movie, director, production);
+        setAttributesFromDTO(movieRequest, movie, director);
+        addScenes(movieRequest, movie);
+        addActors(movieRequest, movie);
         this.repository.save(movie);
-        if (production != null) {
-            // Production owns the @OneToOne foreign key (movie_id), so it must be
-            // persisted after the Movie row is inserted to correctly link them.
-            this.productionRepository.save(production);
-        }
         return movieRequest;
     }
 
     public MovieDTO updateMovie(Long movieId, MovieDTO movieRequest) throws EntityNotFoundException {
         Movie movie = this.repository.findById(movieId)
                 .orElseThrow(() -> new EntityNotFoundException("Movie with id " + movieId + " not found"));
-        Director director = findDirector(movieRequest.directorId());
-        Production production = findProduction(movieRequest.productionId());
-        setAttributesFromDTO(movieRequest, movie, director, production);
+        Director director = findDirector(movieRequest.director());
+        setAttributesFromDTO(movieRequest, movie, director);
+        movie.getActors().clear();
+        addActors(movieRequest, movie);
         this.repository.save(movie);
-        if (production != null) {
-            // Production owns the @OneToOne foreign key (movie_id), so it must be
-            // persisted after the Movie row is inserted to correctly link them.
-            this.productionRepository.save(production);
-        }
         return movieRequest;
     }
 
@@ -97,32 +101,61 @@ public class MovieInventoryService {
         this.repository.delete(movie);
     }
 
-    public void setAttributesFromDTO(MovieDTO request, Movie movie, Director director, Production production) {
+    public void setAttributesFromDTO(MovieDTO request, Movie movie, Director director) {
         movie.setTitle(request.title());
         movie.setSynopsis(request.synopsis());
         movie.setDurationMinutes(request.durationMinutes());
         movie.setReleaseDate(request.releaseDate());
         movie.setGenre(request.genre());
         movie.setDirector(director);
-        if (production != null) {
-            production.setMovie(movie);
-            movie.setProduction(production);
+    }
+
+    public void addScenes(MovieDTO request, Movie movie) {
+        if (request.scenes() == null) {
+            return;
+        }
+        for (SceneDTO sceneRequest : request.scenes()) {
+            Location location = findLocation(sceneRequest.location());
+            Scene scene = new Scene();
+            scene.setSceneNumber(sceneRequest.sceneNumber());
+            scene.setDescription(sceneRequest.description());
+            scene.setTimeOfDay(sceneRequest.timeOfDay());
+            scene.setLocation(location);
+            movie.getScenes().add(scene);
         }
     }
 
-    public Director findDirector(Long directorId) throws EntityNotFoundException {
-        if (directorId == null) {
-            return null;
+    public void addActors(MovieDTO request, Movie movie) {
+        if (request.actors() == null) {
+            return;
         }
-        return this.directorRepository.findById(directorId)
-                .orElseThrow(() -> new EntityNotFoundException("Director with id " + directorId + " not found"));
+        for (ActorDTO actorRequest : request.actors()) {
+            Actor actor = findActor(actorRequest.name());
+            movie.getActors().add(actor);
+        }
     }
 
-    public Production findProduction(Long productionId) throws EntityNotFoundException {
-        if (productionId == null) {
+    public Director findDirector(String directorName) throws EntityNotFoundException {
+        if (directorName == null) {
             return null;
         }
-        return this.productionRepository.findById(productionId)
-                .orElseThrow(() -> new EntityNotFoundException("Production with id " + productionId + " not found"));
+        return this.directorRepository.findByNameIgnoreCase(directorName)
+                .orElseThrow(() -> new EntityNotFoundException("Director with name " + directorName + " not found"));
+    }
+
+    public Actor findActor(String actorName) throws EntityNotFoundException {
+        if (actorName == null) {
+            return null;
+        }
+        return this.actorRepository.findByNameIgnoreCase(actorName)
+                .orElseThrow(() -> new EntityNotFoundException("Actor with name " + actorName + " not found"));
+    }
+
+    public Location findLocation(String locationName) throws EntityNotFoundException {
+        if (locationName == null) {
+            return null;
+        }
+        return this.locationRepository.findByNameIgnoreCase(locationName)
+                .orElseThrow(() -> new EntityNotFoundException("Location with name " + locationName + " not found"));
     }
 }

@@ -4,9 +4,11 @@ import dev.loslca.cinematrix.model.dto.LocationDTO;
 import dev.loslca.cinematrix.model.entity.Location;
 import dev.loslca.cinematrix.repository.LocationRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class LocationInventoryService {
 
     private final LocationRepository repository;

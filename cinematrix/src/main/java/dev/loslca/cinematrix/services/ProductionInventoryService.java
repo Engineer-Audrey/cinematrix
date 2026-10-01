@@ -6,10 +6,12 @@ import dev.loslca.cinematrix.model.entity.Production;
 import dev.loslca.cinematrix.repository.MovieRepository;
 import dev.loslca.cinematrix.repository.ProductionRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ProductionInventoryService {
 
     private final ProductionRepository repository;
@@ -41,7 +43,7 @@ public class ProductionInventoryService {
     }
 
     public ProductionDTO createProduction(ProductionDTO productionRequest) throws EntityNotFoundException {
-        Movie movie = findMovie(productionRequest.movieId());
+        Movie movie = findMovie(productionRequest.movie());
         Production production = new Production();
         setAttributesFromDTO(productionRequest, production, movie);
         this.repository.save(production);
@@ -51,7 +53,7 @@ public class ProductionInventoryService {
     public ProductionDTO updateProduction(Long productionId, ProductionDTO productionRequest) throws EntityNotFoundException {
         Production production = this.repository.findById(productionId)
                 .orElseThrow(() -> new EntityNotFoundException("Production with id " + productionId + " not found"));
-        Movie movie = findMovie(productionRequest.movieId());
+        Movie movie = findMovie(productionRequest.movie());
         setAttributesFromDTO(productionRequest, production, movie);
         this.repository.save(production);
         return productionRequest;
@@ -71,11 +73,11 @@ public class ProductionInventoryService {
         }
     }
 
-    public Movie findMovie(Long movieId) throws EntityNotFoundException {
-        if (movieId == null) {
+    public Movie findMovie(String movieTitle) throws EntityNotFoundException {
+        if (movieTitle == null) {
             return null;
         }
-        return this.movieRepository.findById(movieId)
-                .orElseThrow(() -> new EntityNotFoundException("Movie with id " + movieId + " not found"));
+        return this.movieRepository.findByTitleIgnoreCase(movieTitle)
+                .orElseThrow(() -> new EntityNotFoundException("Movie with title " + movieTitle + " not found"));
     }
 }

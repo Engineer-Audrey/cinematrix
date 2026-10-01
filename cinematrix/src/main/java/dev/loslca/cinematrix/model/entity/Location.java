@@ -12,7 +12,7 @@ public class Location {
     @Column(name = "location_id")
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 150)
+    @Column(name = "name", nullable = false, unique = true, length = 150)
     private String name;
 
     @Column(name = "city", length = 100)

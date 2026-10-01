@@ -2,6 +2,7 @@ package dev.loslca.cinematrix.model.dto;
 
 import dev.loslca.cinematrix.model.constant.MovieGenre;
 import java.time.LocalDate;
+import java.util.List;
 
 public record MovieDTO(
         String title,
@@ -9,7 +10,7 @@ public record MovieDTO(
         Integer durationMinutes,
         LocalDate releaseDate,
         MovieGenre genre,
-        Long actor,
-        Long directorId,
-        Long productionId) {
+        String director,
+        List<SceneDTO> scenes,
+        List<ActorDTO> actors) {
 }

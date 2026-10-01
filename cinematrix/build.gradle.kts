@@ -16,6 +16,7 @@ dependencies {
     // spring
     implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 

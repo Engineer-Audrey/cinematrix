@@ -10,8 +10,6 @@ public interface SceneRepository extends JpaRepository<Scene, Long> {
     public List<Scene> findBySceneNumber(Integer sceneNumber);
     public List<Scene> findByDescriptionContainingIgnoreCase(String description);
     public List<Scene> findByTimeOfDay(TimeOfDay timeOfDay);
-    public List<Scene> findByMovieId(Long movieId);
-    public List<Scene> findByMovieTitleContainingIgnoreCase(String title);
     public List<Scene> findByLocationId(Long locationId);
     public List<Scene> findByLocationCityContainingIgnoreCase(String city);
     public List<Scene> findByLocationCountryContainingIgnoreCase(String country);

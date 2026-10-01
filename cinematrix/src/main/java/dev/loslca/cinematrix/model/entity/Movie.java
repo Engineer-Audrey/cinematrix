@@ -3,6 +3,7 @@ package dev.loslca.cinematrix.model.entity;
 import dev.loslca.cinematrix.model.constant.MovieGenre;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,7 +15,7 @@ public class Movie {
     @Column(name = "movie_id")
     private Long id;
 
-    @Column(name = "title", nullable = false, length = 200)
+    @Column(name = "title", nullable = false, unique = true, length = 200)
     private String title;
 
     @Column(name = "synopsis", columnDefinition = "TEXT")
@@ -37,11 +38,15 @@ public class Movie {
     @OneToOne(mappedBy = "movie")
     private Production production;
 
-    @OneToMany(mappedBy = "movie")
-    private List<Scene> scenes;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "movie_id")
+    private List<Scene> scenes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "movie")
-    private List<Actor> actors;
+    @ManyToMany
+    @JoinTable(name = "movie_actor",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "actor_id"))
+    private List<Actor> actors = new ArrayList<>();
 
     public Movie() {}
 

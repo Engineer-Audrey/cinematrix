@@ -6,6 +6,5 @@ public record SceneDTO(
         Integer sceneNumber,
         String description,
         TimeOfDay timeOfDay,
-        Long movieId,
-        Long locationId) {
+        String location) {
 }

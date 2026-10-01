@@ -4,10 +4,12 @@ import dev.loslca.cinematrix.model.dto.ActorDTO;
 import dev.loslca.cinematrix.model.entity.Actor;
 import dev.loslca.cinematrix.repository.ActorRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public class ActorInventoryService {
 
     private final ActorRepository repository;

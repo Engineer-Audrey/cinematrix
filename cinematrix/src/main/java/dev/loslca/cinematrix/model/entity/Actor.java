@@ -2,7 +2,6 @@ package dev.loslca.cinematrix.model.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Table(name = "actor")
@@ -13,7 +12,7 @@ public class Actor {
     @Column(name = "actor_id")
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 150)
+    @Column(name = "name", nullable = false, unique = true, length = 150)
     private String name;
 
     @Column(name = "nationality", length = 100)
@@ -21,10 +20,6 @@ public class Actor {
 
     @Column(name = "birth_date")
     private LocalDate birthDate;
-
-    @ManyToOne
-    @JoinColumn(name = "actor_id")
-    private Movie movie;
 
     public Actor() {}
 
@@ -39,7 +34,4 @@ public class Actor {
 
     public LocalDate getBirthDate() { return birthDate; }
     public void setBirthDate(LocalDate birthDate) { this.birthDate = birthDate; }
-
-    public Movie getMovies() { return movie; }
-    public void setMovies(Movie movies) { this.movie = movie; }
 }

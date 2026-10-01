@@ -4,9 +4,11 @@ import dev.loslca.cinematrix.model.dto.DirectorDTO;
 import dev.loslca.cinematrix.model.entity.Director;
 import dev.loslca.cinematrix.repository.DirectorRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class DirectorInventoryService {
 
     private final DirectorRepository repository;

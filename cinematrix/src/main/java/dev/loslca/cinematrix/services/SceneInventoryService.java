@@ -9,9 +9,11 @@ import dev.loslca.cinematrix.repository.LocationRepository;
 import dev.loslca.cinematrix.repository.MovieRepository;
 import dev.loslca.cinematrix.repository.SceneRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class SceneInventoryService {
 
     private final SceneRepository repository;
@@ -42,14 +44,6 @@ public class SceneInventoryService {
         return this.repository.findByTimeOfDay(timeOfDay);
     }
 
-    public List<Scene> findScenesByMovieId(Long movieId) {
-        return this.repository.findByMovieId(movieId);
-    }
-
-    public List<Scene> findScenesByMovieTitle(String title) {
-        return this.repository.findByMovieTitleContainingIgnoreCase(title);
-    }
-
     public List<Scene> findScenesByLocationId(Long locationId) {
         return this.repository.findByLocationId(locationId);
     }
@@ -62,21 +56,22 @@ public class SceneInventoryService {
         return this.repository.findByLocationCountryContainingIgnoreCase(country);
     }
 
-    public SceneDTO createScene(SceneDTO sceneRequest) throws EntityNotFoundException {
-        Movie movie = findMovie(sceneRequest.movieId());
-        Location location = findLocation(sceneRequest.locationId());
+    public SceneDTO createScene(String movieTitle, SceneDTO sceneRequest) throws EntityNotFoundException {
+        Movie movie = this.movieRepository.findByTitleIgnoreCase(movieTitle)
+                .orElseThrow(() -> new EntityNotFoundException("Movie with title " + movieTitle + " not found"));
+        Location location = findLocation(sceneRequest.location());
         Scene scene = new Scene();
-        setAttributesFromDTO(sceneRequest, scene, movie, location);
-        this.repository.save(scene);
+        setAttributesFromDTO(sceneRequest, scene, location);
+        movie.getScenes().add(scene);
+        this.movieRepository.save(movie);
         return sceneRequest;
     }
 
     public SceneDTO updateScene(Long sceneId, SceneDTO sceneRequest) throws EntityNotFoundException {
         Scene scene = this.repository.findById(sceneId)
                 .orElseThrow(() -> new EntityNotFoundException("Scene with id " + sceneId + " not found"));
-        Movie movie = findMovie(sceneRequest.movieId());
-        Location location = findLocation(sceneRequest.locationId());
-        setAttributesFromDTO(sceneRequest, scene, movie, location);
+        Location location = findLocation(sceneRequest.location());
+        setAttributesFromDTO(sceneRequest, scene, location);
         this.repository.save(scene);
         return sceneRequest;
     }
@@ -87,27 +82,18 @@ public class SceneInventoryService {
         this.repository.delete(scene);
     }
 
-    public void setAttributesFromDTO(SceneDTO request, Scene scene, Movie movie, Location location) {
+    public void setAttributesFromDTO(SceneDTO request, Scene scene, Location location) {
         scene.setSceneNumber(request.sceneNumber());
         scene.setDescription(request.description());
         scene.setTimeOfDay(request.timeOfDay());
-        scene.setMovie(movie);
         scene.setLocation(location);
     }
 
-    public Movie findMovie(Long movieId) throws EntityNotFoundException {
-        if (movieId == null) {
+    public Location findLocation(String locationName) throws EntityNotFoundException {
+        if (locationName == null) {
             return null;
         }
-        return this.movieRepository.findById(movieId)
-                .orElseThrow(() -> new EntityNotFoundException("Movie with id " + movieId + " not found"));
-    }
-
-    public Location findLocation(Long locationId) throws EntityNotFoundException {
-        if (locationId == null) {
-            return null;
-        }
-        return this.locationRepository.findById(locationId)
-                .orElseThrow(() -> new EntityNotFoundException("Location with id " + locationId + " not found"));
+        return this.locationRepository.findByNameIgnoreCase(locationName)
+                .orElseThrow(() -> new EntityNotFoundException("Location with name " + locationName + " not found"));
     }
 }
